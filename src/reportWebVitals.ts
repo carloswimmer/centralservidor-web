@@ -1,6 +1,7 @@
-import { ReportHandler } from 'web-vitals';
+// eslint-disable-next-line
+import { ReportHandler as ReportInterface } from 'web-vitals';
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
+const reportWebVitals = (onPerfEntry?: ReportInterface): void => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
       getCLS(onPerfEntry);
