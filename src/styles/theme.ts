@@ -25,6 +25,10 @@ const theme = createMuiTheme({
     error: {
       main: '#D50000',
     },
+    text: {
+      primary: '#37474f',
+      secondary: '#37474f',
+    },
   },
   typography: {
     fontFamily: ['"Open Sans"', 'sans-serif'].join(','),
