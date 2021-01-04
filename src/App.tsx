@@ -3,7 +3,7 @@ import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import theme from './styles/theme';
-import Example from './components/Example';
+import Example from './components/Example/index';
 
 const App: React.FC = () => {
   return (
