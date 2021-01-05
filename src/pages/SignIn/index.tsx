@@ -9,13 +9,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import {
-  AccountCircle,
-  VisibilityOff,
-  Visibility,
-  LockRounded,
-  Copyright,
-} from '@material-ui/icons';
+import { VisibilityOff, Visibility, Copyright } from '@material-ui/icons';
 
 import logoCentral from '../../assets/centralservidor-logo-texto.png';
 import logoSshd from '../../assets/SshdLogo.png';
