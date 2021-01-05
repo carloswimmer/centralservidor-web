@@ -1,5 +1,6 @@
 import {
   makeStyles,
+  // eslint-disable-next-line
   SimplePaletteColorOptions,
 } from '@material-ui/core/styles';
 
