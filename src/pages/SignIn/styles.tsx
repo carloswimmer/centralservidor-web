@@ -53,20 +53,21 @@ const useStyles = makeStyles({
     '& .MuiTextField-root': {
       marginTop: 4,
       marginBottom: 24,
-      width: 343,
+      width: 340,
     },
     '& .MuiFilledInput-root': {
-      backgroundColor: 'rgba(230, 241, 225, 0.7)',
+      backgroundColor: 'rgba(230, 241, 225, 0.8)',
+      transition: 'background-color 0.3s',
     },
     '& .MuiFilledInput-root:hover': {
-      backgroundColor: 'rgba(230, 241, 225, 0.6)',
+      backgroundColor: 'rgba(230, 241, 225, 0.65)',
     },
     '& .MuiInputBase-root': {
       color: 'rgba(0, 0, 0, 0.56)',
     },
   },
   formButton: {
-    width: 343,
+    width: 340,
     marginTop: 8,
     marginBottom: 56,
 

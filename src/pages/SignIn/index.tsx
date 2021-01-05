@@ -70,29 +70,13 @@ const SignIn: React.FC = () => {
           </Grid>
           <Grid item>
             <form className={classes.formContent} noValidate autoComplete="off">
-              <TextField
-                id="sshd"
-                label="SSHD"
-                variant="filled"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <TextField id="sshd" label="SSHD" variant="filled" />
               <TextField
                 id="password"
                 label="Senha"
                 variant="filled"
                 type={values.showPassword ? 'text' : 'password'}
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockRounded />
-                    </InputAdornment>
-                  ),
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
