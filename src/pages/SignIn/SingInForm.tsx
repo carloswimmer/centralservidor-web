@@ -25,9 +25,6 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
     '& .MuiFilledInput-root:hover': {
       backgroundColor: 'rgba(230, 241, 225, 0.65)',
     },
-    '& .MuiInputBase-root': {
-      color: palette.text.primary,
-    },
   },
   formButton: {
     marginTop: 8,
@@ -38,6 +35,16 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
     },
   },
 }));
+
+interface SignInProps {
+  password: string;
+  showPassword: boolean;
+}
+
+const initialValues = {
+  password: '',
+  showPassword: false,
+};
 
 const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -61,12 +68,14 @@ const SignInForm: React.FC = () => {
         id="sshd"
         label="SSHD"
         variant={darkMode ? 'outlined' : 'filled'}
+        color="secondary"
         fullWidth
       />
       <TextField
         id="password"
         label="Senha"
         variant={darkMode ? 'outlined' : 'filled'}
+        color="secondary"
         type={showPassword ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
@@ -76,6 +85,7 @@ const SignInForm: React.FC = () => {
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
                 edge="end"
+                style={darkMode ? { color: '#ffffffb0' } : {}}
               >
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>

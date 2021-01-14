@@ -20,16 +20,16 @@ export const ThemeProvider: React.FC = ({ children }) => {
       palette: {
         type: darkMode ? 'dark' : 'light',
         primary: {
-          light: darkMode ? '##62efff' : '#418F89',
-          main: darkMode ? '#00bcd4' : '#00615C',
-          dark: darkMode ? '#008ba3' : '#003633',
+          light: '#418F89',
+          main: '#00615C',
+          dark: '#003633',
           contrastText: '#F1F8E9',
         },
         secondary: {
-          light: darkMode ? '#ff6fa7' : '#6ABF69',
-          main: darkMode ? '#f73378' : '#388E3C',
-          dark: darkMode ? '#be004d' : '#00600F',
-          contrastText: darkMode ? '#37474f' : '#FAFAFA',
+          light: '#6ABF69',
+          main: '#388E3C',
+          dark: '#00600F',
+          contrastText: '#FAFAFA',
         },
         warning: {
           main: '#FF6D00',
@@ -39,7 +39,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
           contrastText: '#FAFAFA',
         },
         text: {
-          primary: darkMode ? '#00bcd4' : '#37474f',
+          primary: darkMode ? '#6fce52' : '#37474f',
         },
       },
       typography: {

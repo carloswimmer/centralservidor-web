@@ -1,18 +1,9 @@
-import React, { useState, MouseEvent } from 'react';
-import {
-  Typography,
-  Grid,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Box,
-  Button,
-} from '@material-ui/core';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { VisibilityOff, Visibility, Copyright } from '@material-ui/icons';
+import React from 'react';
+import { Typography, Grid, Box } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Copyright } from '@material-ui/icons';
 
 import logoCentral from '../../assets/centralservidor-logo-texto.png';
-import logoCentralDark from '../../assets/centralservidor-logo-texto-dark.png';
 import logoSshd from '../../assets/SshdLogo.png';
 import logoPms from '../../assets/LogoPMS.png';
 import signInBackground from '../../assets/people-working.jpg';
@@ -35,8 +26,7 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
   header: {
     flex: 1,
     height: 279,
-    backgroundColor:
-      palette.type === 'dark' ? palette.primary.dark : palette.primary.main,
+    backgroundColor: palette.primary.main,
     '& img': {
       width: 370,
     },
@@ -71,7 +61,9 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
       top: 0,
       left: 0,
       background:
-        'linear-gradient(to right, rgba(4, 44, 30, 0.6) 20%, rgba(53, 6, 124, 0.6) 100%)',
+        palette.type === 'dark'
+          ? 'linear-gradient(to right, rgba(4, 44, 30, 0.6) 20%, rgba(76, 70, 9, 0.6) 100%)'
+          : 'linear-gradient(to right, rgba(4, 44, 30, 0.6) 20%, rgba(53, 6, 124, 0.6) 100%)',
     },
   },
 
@@ -94,16 +86,7 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
   },
 }));
 
-interface State {
-  password: string;
-  showPassword: boolean;
-}
-
 const SignIn: React.FC = () => {
-  const [values, setValues] = useState<State>({
-    password: '',
-    showPassword: false,
-  });
   const classes = useStyles();
   const { darkMode } = useDarkMode();
 
@@ -117,10 +100,7 @@ const SignIn: React.FC = () => {
           justify="center"
           alignItems="center"
         >
-          <img
-            src={darkMode ? logoCentralDark : logoCentral}
-            alt="Logo Central do Servidor"
-          />
+          <img src={logoCentral} alt="Logo Central do Servidor" />
         </Grid>
         <Grid container item direction="column" alignItems="center">
           <Grid className={classes.formHeader} item>
