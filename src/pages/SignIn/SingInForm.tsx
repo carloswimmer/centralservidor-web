@@ -47,13 +47,11 @@ const useStyles = makeStyles(({ zIndex }: Theme) => ({
 interface SignInProps {
   sshd: string;
   password: string;
-  showPassword: boolean;
 }
 
 const initialValues: SignInProps = {
   sshd: '',
   password: '',
-  showPassword: false,
 };
 
 const signInSchema = Yup.object({
