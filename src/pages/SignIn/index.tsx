@@ -9,7 +9,6 @@ import logoPms from '../../assets/LogoPMS.png';
 import signInBackground from '../../assets/people-working.jpg';
 
 import SignInForm from './SingInForm';
-import { useDarkMode } from '../../hooks/darkMode';
 
 const useStyles = makeStyles(({ palette }: Theme) => ({
   root: {
@@ -88,7 +87,6 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
 
 const SignIn: React.FC = () => {
   const classes = useStyles();
-  const { darkMode } = useDarkMode();
 
   return (
     <Grid className={classes.root} container>
