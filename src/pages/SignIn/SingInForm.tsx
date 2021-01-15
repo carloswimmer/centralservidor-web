@@ -71,6 +71,7 @@ const SignInForm: React.FC = () => {
   const handleSignInSubmit = useCallback(
     (signInValues: SignInProps, actions: FormikHelpers<SignInProps>) => {
       setTimeout(() => {
+        // eslint-disable-next-line
         console.log('submitted! ', signInValues);
         actions.setSubmitting(false);
         actions.resetForm();
