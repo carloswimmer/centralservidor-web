@@ -6,11 +6,11 @@ interface MuiButtonProps extends ButtonProps {
 }
 
 const Button: React.FC<MuiButtonProps> = (props) => {
-  const { text, size, color, variant, onClick, ...others } = props;
+  const { text, size, color, onClick, ...others } = props;
 
   return (
     <MuiButton
-      variant={variant || 'contained'}
+      variant="contained"
       size={size}
       color={color}
       onClick={onClick}

@@ -13,6 +13,7 @@ import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { useDarkMode } from '../../hooks/darkMode';
+import { useAuth } from '../../hooks/auth';
 import handleFieldProps from '../../utils/handleFieldProps';
 import { Input, Button } from '../../components/controls';
 
@@ -44,12 +45,12 @@ const useStyles = makeStyles(({ zIndex }: Theme) => ({
   },
 }));
 
-interface SignInProps {
+export interface SignInFormData {
   sshd: string;
   password: string;
 }
 
-const initialValues: SignInProps = {
+const initialValues: SignInFormData = {
   sshd: '',
   password: '',
 };
@@ -65,18 +66,7 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const classes = useStyles();
   const { darkMode } = useDarkMode();
-
-  const handleSignInSubmit = useCallback(
-    (signInValues: SignInProps, actions: FormikHelpers<SignInProps>) => {
-      setTimeout(() => {
-        // eslint-disable-next-line
-        console.log('submitted! ', signInValues);
-        actions.setSubmitting(false);
-        actions.resetForm();
-      }, 3000);
-    },
-    [],
-  );
+  const { token, signIn } = useAuth();
 
   const handleClickShowPassword = useCallback(() => {
     setShowPassword((state) => !state);
@@ -87,6 +77,26 @@ const SignInForm: React.FC = () => {
       event.preventDefault();
     },
     [],
+  );
+
+  const handleSignInSubmit = useCallback(
+    async (
+      signInValues: SignInFormData,
+      actions: FormikHelpers<SignInFormData>,
+    ) => {
+      try {
+        await signIn(signInValues);
+        // eslint-disable-next-line
+        console.log(token);
+      } catch (err) {
+        // eslint-disable-next-line
+        console.log(err);
+      } finally {
+        actions.setSubmitting(false);
+        actions.resetForm();
+      }
+    },
+    [signIn, token],
   );
 
   return (

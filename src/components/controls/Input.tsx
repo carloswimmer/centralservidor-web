@@ -6,7 +6,6 @@ const Input: React.FC<TextFieldProps> = (props) => {
   const {
     name,
     label,
-    variant,
     value,
     onChange,
     onBlur,
@@ -20,7 +19,7 @@ const Input: React.FC<TextFieldProps> = (props) => {
 
   return (
     <TextField
-      variant={variant || 'outlined'}
+      variant="outlined"
       fullWidth
       label={label}
       name={name}
