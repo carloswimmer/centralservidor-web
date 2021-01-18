@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DarkModeProvider } from './darkMode';
 import { ThemeProvider } from './theme';
-import { AuthProvider } from './auth';
+import { AuthProvider } from './Auth';
 
 const AppProvider: React.FC = ({ children }) => {
   return (

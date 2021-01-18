@@ -13,7 +13,7 @@ import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { useDarkMode } from '../../hooks/darkMode';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/Auth';
 import handleFieldProps from '../../utils/handleFieldProps';
 import { Input, Button } from '../../components/controls';
 
@@ -66,7 +66,10 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const classes = useStyles();
   const { darkMode } = useDarkMode();
-  const { token, signIn } = useAuth();
+  const { user, signIn } = useAuth();
+
+  // eslint-disable-next-line
+  console.log('root', user);
 
   const handleClickShowPassword = useCallback(() => {
     setShowPassword((state) => !state);
@@ -87,7 +90,7 @@ const SignInForm: React.FC = () => {
       try {
         await signIn(signInValues);
         // eslint-disable-next-line
-        console.log(token);
+        console.log('handle', user);
       } catch (err) {
         // eslint-disable-next-line
         console.log(err);
@@ -96,7 +99,7 @@ const SignInForm: React.FC = () => {
         actions.resetForm();
       }
     },
-    [signIn, token],
+    [signIn, user],
   );
 
   return (
