@@ -14,7 +14,7 @@ import * as Yup from 'yup';
 
 import { useDarkMode } from '../../hooks/darkMode';
 import { useAuth } from '../../hooks/Auth';
-import handleFieldProps from '../../utils/handleFieldProps';
+import handleFieldProps from '../../components/controls/utils/handleFieldProps';
 import { Input, Button } from '../../components/controls';
 
 const useStyles = makeStyles(({ zIndex }: Theme) => ({
