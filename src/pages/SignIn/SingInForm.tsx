@@ -13,7 +13,8 @@ import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { useDarkMode } from '../../hooks/darkMode';
-import { useAuth } from '../../hooks/Auth';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import handleFieldProps from '../../components/controls/utils/handleFieldProps';
 import { Input, Button } from '../../components/controls';
 
@@ -66,10 +67,8 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const classes = useStyles();
   const { darkMode } = useDarkMode();
-  const { user, signIn } = useAuth();
-
-  // eslint-disable-next-line
-  console.log('root', user);
+  const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleClickShowPassword = useCallback(() => {
     setShowPassword((state) => !state);
@@ -89,17 +88,18 @@ const SignInForm: React.FC = () => {
     ) => {
       try {
         await signIn(signInValues);
-        // eslint-disable-next-line
-        console.log('handle', user);
+        addToast({
+          text: 'Autenticação efetuada com sucesso',
+          severity: 'success',
+        });
       } catch (err) {
-        // eslint-disable-next-line
-        console.log(err);
+        addToast({ text: err.response.data.message });
       } finally {
         actions.setSubmitting(false);
         actions.resetForm();
       }
     },
-    [signIn, user],
+    [signIn, addToast],
   );
 
   return (

@@ -1,20 +1,32 @@
-import React, { SyntheticEvent, useCallback, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Slide, Snackbar } from '@material-ui/core';
-import { Alert, AlertProps } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import { TransitionProps } from '@material-ui/core/transitions';
 
-interface ToastProps extends AlertProps {
-  message: string;
-  severity?: 'success' | 'error' | 'warning' | 'info';
+import { ToastMessage } from '../hooks/toast';
+
+interface ToastProps {
+  messages: ToastMessage[];
 }
 
 function SlideTransition(props: TransitionProps) {
   return <Slide {...props} direction="left" />;
 }
 
-const Toast: React.FC<ToastProps> = (props) => {
-  const [open, setOpen] = useState<boolean>(true);
-  const { message, severity, ...others } = props;
+const Toast: React.FC<ToastProps> = ({ messages }) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<ToastMessage>({} as ToastMessage);
+
+  const handleOpen = useCallback(() => {
+    if (messages.length) {
+      setMessage(messages[0]);
+      setOpen(true);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    handleOpen();
+  }, [handleOpen]);
 
   const handleClose = useCallback((event?: SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -24,6 +36,12 @@ const Toast: React.FC<ToastProps> = (props) => {
     setOpen(false);
   }, []);
 
+  const handleExited = useCallback(() => {
+    messages.splice(0, 1);
+
+    handleOpen();
+  }, [messages, handleOpen]);
+
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -31,15 +49,15 @@ const Toast: React.FC<ToastProps> = (props) => {
       autoHideDuration={6000}
       TransitionComponent={SlideTransition}
       onClose={handleClose}
+      onExited={handleExited}
     >
       <Alert
-        severity="error"
+        severity={message.severity || 'error'}
         variant="filled"
         elevation={6}
         onClose={handleClose}
-        {...others}
       >
-        {message}
+        {message.text}
       </Alert>
     </Snackbar>
   );
