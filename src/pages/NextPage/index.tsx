@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Button } from '@material-ui/core';
 
-const Dashboard: React.FC = () => {
+import { useAuth } from '../../hooks/auth';
+
+const NextPage: React.FC = () => {
+  const { signOut } = useAuth();
+
   return (
     <>
       <Box
@@ -12,18 +15,13 @@ const Dashboard: React.FC = () => {
         justifyContent="center"
         width={1}
       >
-        <h1>Dashboard</h1>
-        <Button
-          variant="contained"
-          color="secondary"
-          component={Link}
-          to="/next-page"
-        >
-          Next Page
+        <h1>NextPage</h1>
+        <Button variant="contained" color="secondary" onClick={signOut}>
+          Logout
         </Button>
       </Box>
     </>
   );
 };
 
-export default Dashboard;
+export default NextPage;

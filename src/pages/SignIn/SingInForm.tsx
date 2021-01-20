@@ -88,15 +88,14 @@ const SignInForm: React.FC = () => {
     ) => {
       try {
         await signIn(signInValues);
+
         addToast({
           text: 'Autenticação efetuada com sucesso',
           severity: 'success',
         });
       } catch (err) {
         addToast({ text: err.response.data.message });
-      } finally {
         actions.setSubmitting(false);
-        actions.resetForm();
       }
     },
     [signIn, addToast],
