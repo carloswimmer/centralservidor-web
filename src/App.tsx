@@ -2,15 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppProvider from './hooks';
 
+import Navigation from './components/Navigation';
 import Routes from './routes';
 
 const App: React.FC = () => {
   return (
-    <AppProvider>
-      <Router>
-        <Routes />
-      </Router>
-    </AppProvider>
+    <Router>
+      <AppProvider>
+        <Navigation>
+          <Routes />
+        </Navigation>
+      </AppProvider>
+    </Router>
   );
 };
 
