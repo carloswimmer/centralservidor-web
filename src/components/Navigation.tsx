@@ -23,84 +23,105 @@ import {
   Menu as MenuIcon,
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
+  AccountBalance,
+  BarChart,
+  HowToReg,
+  ListAlt,
+  Link as LinkIcon,
 } from '@material-ui/icons';
 
 import { useAuth } from '../hooks/auth';
 import logoCentral from '../assets/centralservidor-logo-texto.png';
 
+const routes = [
+  { title: 'Declarações', icon: <AccountBalance /> },
+  { title: 'Avaliações', icon: <BarChart /> },
+  { title: 'Recadastramento', icon: <HowToReg /> },
+  { title: 'Formulários', icon: <ListAlt /> },
+  { title: 'Links', icon: <LinkIcon /> },
+];
+
 const drawerWidth = 256;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    menuButton: {
-      marginRight: theme.spacing(0.5),
-      [theme.breakpoints.up('sm')]: {
-        marginRight: theme.spacing(2),
+const useStyles = makeStyles(
+  ({ zIndex, transitions, palette, spacing, breakpoints, mixins }: Theme) =>
+    createStyles({
+      root: {
+        display: 'flex',
       },
-    },
-    logo: {
-      height: 44,
-      [theme.breakpoints.up('sm')]: {
-        height: 50,
+      appBar: {
+        zIndex: zIndex.drawer + 1,
+        transition: transitions.create(['width', 'margin'], {
+          easing: transitions.easing.sharp,
+          duration: transitions.duration.leavingScreen,
+        }),
       },
-    },
-    hide: {
-      display: 'none',
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    drawerClose: {
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflowX: 'hidden',
-      width: 0,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(7) + 1,
+      appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: transitions.create(['width', 'margin'], {
+          easing: transitions.easing.sharp,
+          duration: transitions.duration.enteringScreen,
+        }),
       },
-    },
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
-      ...theme.mixins.toolbar,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-  }),
+      menuButton: {
+        marginRight: spacing(0.5),
+        [breakpoints.up('sm')]: {
+          marginRight: spacing(2),
+        },
+      },
+      logo: {
+        height: 44,
+        [breakpoints.up('sm')]: {
+          height: 50,
+        },
+      },
+      hide: {
+        display: 'none',
+      },
+      drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        '& .MuiSvgIcon-root': {
+          color: palette.type === 'dark' ? '' : palette.primary.contrastText,
+        },
+      },
+      drawerOpen: {
+        backgroundColor: palette.type === 'dark' ? '' : palette.primary.light,
+        color: palette.type === 'dark' ? '' : palette.primary.contrastText,
+        width: drawerWidth,
+        transition: transitions.create('width', {
+          easing: transitions.easing.sharp,
+          duration: transitions.duration.enteringScreen,
+        }),
+      },
+      drawerClose: {
+        backgroundColor: palette.type === 'dark' ? '' : palette.primary.light,
+        color: palette.type === 'dark' ? '' : palette.primary.contrastText,
+        transition: transitions.create('width', {
+          easing: transitions.easing.sharp,
+          duration: transitions.duration.leavingScreen,
+        }),
+        overflowX: 'hidden',
+        width: 0,
+        [breakpoints.up('sm')]: {
+          width: spacing(7) + 1,
+        },
+      },
+      toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: spacing(0, 1),
+        // necessary for content to be below app bar
+        ...mixins.toolbar,
+      },
+      content: {
+        flexGrow: 1,
+        padding: spacing(3),
+      },
+    }),
 );
 
 const Navigation: React.FC = ({ children }) => {
@@ -170,17 +191,10 @@ const Navigation: React.FC = ({ children }) => {
           </div>
           <Divider />
           <List>
-            {[
-              'Declarações',
-              'Avaliações',
-              'Recadastramento',
-              'Formulários',
-            ].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+            {routes.map((item) => (
+              <ListItem button key={item.title}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.title} />
               </ListItem>
             ))}
           </List>
