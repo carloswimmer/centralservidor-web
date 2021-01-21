@@ -28,11 +28,16 @@ import {
   HowToReg,
   ListAlt,
   Link as LinkIcon,
+  NightsStay,
+  WbSunny,
+  PowerSettingsNew,
+  More as MoreIcon,
 } from '@material-ui/icons';
 
 import { useAuth } from '../hooks/auth';
 import logoCentral from '../assets/centralservidor-logo-texto.png';
 import logoPms from '../assets/LogoPMS.png';
+import { useDarkMode } from '../hooks/darkMode';
 
 const routes = [
   { title: 'Declarações', icon: <AccountBalance /> },
@@ -41,6 +46,8 @@ const routes = [
   { title: 'Formulários', icon: <ListAlt /> },
   { title: 'Links', icon: <LinkIcon /> },
 ];
+
+const mobileMenuId = 'primary-search-account-menu-mobile';
 
 const drawerWidth = 256;
 
@@ -75,6 +82,21 @@ const useStyles = makeStyles(
         height: 44,
         [breakpoints.up('sm')]: {
           height: 50,
+        },
+      },
+      grow: {
+        flexGrow: 1,
+      },
+      sectionDesktop: {
+        display: 'none',
+        [breakpoints.up('md')]: {
+          display: 'flex',
+        },
+      },
+      sectionMobile: {
+        display: 'flex',
+        [breakpoints.up('md')]: {
+          display: 'none',
         },
       },
       hide: {
@@ -127,10 +149,15 @@ const useStyles = makeStyles(
 
 const Navigation: React.FC = ({ children }) => {
   const [open, setOpen] = useState(true);
+  const [
+    mobileMoreAnchorEl,
+    setMobileMoreAnchorEl,
+  ] = useState<null | HTMLElement>(null);
   const classes = useStyles();
   const theme = useTheme();
   // eslint-disable-next-line
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -138,6 +165,10 @@ const Navigation: React.FC = ({ children }) => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   if (user) {
@@ -166,6 +197,35 @@ const Navigation: React.FC = ({ children }) => {
               alt="Logo Central do Servidor"
               className={classes.logoCentral}
             />
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <IconButton
+                aria-label="muda cores para tema escuro"
+                color="inherit"
+                onClick={toggleDarkMode}
+              >
+                {darkMode ? <WbSunny /> : <NightsStay />}
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="sai da aplicação"
+                onClick={signOut}
+                color="inherit"
+              >
+                <PowerSettingsNew />
+              </IconButton>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="mostra mais opções"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
           </Toolbar>
         </AppBar>
         <Drawer
