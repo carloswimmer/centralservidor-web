@@ -32,6 +32,7 @@ import {
 
 import { useAuth } from '../hooks/auth';
 import logoCentral from '../assets/centralservidor-logo-texto.png';
+import logoPms from '../assets/LogoPMS.png';
 
 const routes = [
   { title: 'Declarações', icon: <AccountBalance /> },
@@ -70,7 +71,7 @@ const useStyles = makeStyles(
           marginRight: spacing(2),
         },
       },
-      logo: {
+      logoCentral: {
         height: 44,
         [breakpoints.up('sm')]: {
           height: 50,
@@ -112,7 +113,7 @@ const useStyles = makeStyles(
       toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         padding: spacing(0, 1),
         // necessary for content to be below app bar
         ...mixins.toolbar,
@@ -163,7 +164,7 @@ const Navigation: React.FC = ({ children }) => {
             <img
               src={logoCentral}
               alt="Logo Central do Servidor"
-              className={classes.logo}
+              className={classes.logoCentral}
             />
           </Toolbar>
         </AppBar>
@@ -181,6 +182,11 @@ const Navigation: React.FC = ({ children }) => {
           }}
         >
           <div className={classes.toolbar}>
+            <img
+              src={logoPms}
+              alt="Logo Prefeitura de Santos"
+              style={{ marginLeft: theme.spacing(1) }}
+            />
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
