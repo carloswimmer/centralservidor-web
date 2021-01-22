@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import {
   createStyles,
@@ -28,16 +28,13 @@ import {
   HowToReg,
   ListAlt,
   Link as LinkIcon,
-  NightsStay,
-  WbSunny,
-  PowerSettingsNew,
-  MoreVert as MoreIcon,
 } from '@material-ui/icons';
 
-import { useAuth } from '../hooks/auth';
-import logoCentral from '../assets/centralservidor-logo-texto.png';
-import logoPms from '../assets/LogoPMS.png';
-import { useDarkMode } from '../hooks/darkMode';
+import { useAuth } from '../../hooks/auth';
+import logoCentral from '../../assets/centralservidor-logo-texto.png';
+import logoPms from '../../assets/LogoPMS.png';
+import ToolbarMenu from './ToolbarMenu';
+import ScrollTop from './ScrollTop';
 
 const routes = [
   { title: 'Declarações', icon: <AccountBalance /> },
@@ -46,8 +43,6 @@ const routes = [
   { title: 'Formulários', icon: <ListAlt /> },
   { title: 'Links', icon: <LinkIcon /> },
 ];
-
-const mobileMenuId = 'primary-search-account-menu-mobile';
 
 const drawerWidth = 256;
 
@@ -86,18 +81,6 @@ const useStyles = makeStyles(
       },
       grow: {
         flexGrow: 1,
-      },
-      sectionDesktop: {
-        display: 'none',
-        [breakpoints.up('md')]: {
-          display: 'flex',
-        },
-      },
-      sectionMobile: {
-        display: 'flex',
-        [breakpoints.up('md')]: {
-          display: 'none',
-        },
       },
       hide: {
         display: 'none',
@@ -147,29 +130,21 @@ const useStyles = makeStyles(
     }),
 );
 
-const Navigation: React.FC = ({ children }) => {
+const AppShell: React.FC = ({ children }) => {
   const [open, setOpen] = useState(true);
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl,
-  ] = useState<null | HTMLElement>(null);
+
   const classes = useStyles();
   const theme = useTheme();
   // eslint-disable-next-line
-  const { user, signOut } = useAuth();
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { user } = useAuth();
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = useCallback(() => {
     setOpen(false);
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  }, []);
 
   if (user) {
     return (
@@ -198,34 +173,7 @@ const Navigation: React.FC = ({ children }) => {
               className={classes.logoCentral}
             />
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                aria-label="muda cores para tema escuro"
-                color="inherit"
-                onClick={toggleDarkMode}
-              >
-                {darkMode ? <WbSunny /> : <NightsStay />}
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="sai da aplicação"
-                onClick={signOut}
-                color="inherit"
-              >
-                <PowerSettingsNew />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="mostra mais opções"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
+            <ToolbarMenu />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -277,13 +225,14 @@ const Navigation: React.FC = ({ children }) => {
           </List>
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.toolbar} />
+          <div className={classes.toolbar} id="back-to-top-anchor" />
           {children}
         </main>
+        <ScrollTop />
       </div>
     );
   }
   return <div>{children}</div>;
 };
 
-export default Navigation;
+export default AppShell;
