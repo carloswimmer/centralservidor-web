@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
-
-import { useAuth } from '../../hooks/auth';
+import { Box, Button, Container } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const NextPage: React.FC = () => {
-  const { signOut } = useAuth();
+  const history = useHistory();
 
   return (
     <>
@@ -16,8 +15,24 @@ const NextPage: React.FC = () => {
         width={1}
       >
         <h1>NextPage</h1>
-        <Button variant="contained" color="secondary" onClick={signOut}>
-          Logout
+        <Container maxWidth="sm">
+          <Box my={8}>
+            {[...new Array(20)]
+              .map(
+                () => `Cras mattis consectetur purus sit amet fermentum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
+              )
+              .join('\n')}
+          </Box>
+        </Container>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => history.goBack()}
+        >
+          Go back
         </Button>
       </Box>
     </>
