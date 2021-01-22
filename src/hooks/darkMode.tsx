@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 interface DarkModeContextData {
   darkMode: boolean;
@@ -10,7 +16,15 @@ const DarkModeContext = createContext<DarkModeContextData>(
 );
 
 const DarkModeProvider: React.FC = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    const mode = localStorage.getItem('@Central:darkMode');
+
+    return mode ? !!mode : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('@Central:darkMode', darkMode.toString());
+  }, [darkMode]);
 
   const toggleDarkMode = useCallback(() => {
     setDarkMode((mode) => !mode);

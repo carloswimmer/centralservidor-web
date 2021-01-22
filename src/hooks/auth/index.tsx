@@ -46,7 +46,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
     sessionStorage.setItem('@Central:token', token);
     sessionStorage.setItem('@Central:user', JSON.stringify(user));
-    await setData({ token, user });
+    setData({ token, user });
   }, []);
 
   const signOut = useCallback(() => {

@@ -31,7 +31,7 @@ import {
   NightsStay,
   WbSunny,
   PowerSettingsNew,
-  More as MoreIcon,
+  MoreVert as MoreIcon,
 } from '@material-ui/icons';
 
 import { useAuth } from '../hooks/auth';
