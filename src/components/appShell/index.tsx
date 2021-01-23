@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
   createStyles,
@@ -16,10 +16,10 @@ import {
   ListItemText,
   Divider,
   IconButton,
+  Collapse,
+  SvgIconProps,
 } from '@material-ui/core';
 import {
-  MoveToInbox as InboxIcon,
-  Mail as MailIcon,
   Menu as MenuIcon,
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -28,6 +28,8 @@ import {
   HowToReg,
   ListAlt,
   Link as LinkIcon,
+  ExpandLess,
+  ExpandMore,
 } from '@material-ui/icons';
 
 import { useAuth } from '../../hooks/auth';
@@ -35,14 +37,6 @@ import logoCentral from '../../assets/centralservidor-logo-texto.png';
 import logoPms from '../../assets/LogoPMS.png';
 import ToolbarMenu from './ToolbarMenu';
 import ScrollTop from './ScrollTop';
-
-const routes = [
-  { title: 'Declarações', icon: <AccountBalance /> },
-  { title: 'Avaliações', icon: <BarChart /> },
-  { title: 'Recadastramento', icon: <HowToReg /> },
-  { title: 'Formulários', icon: <ListAlt /> },
-  { title: 'Links', icon: <LinkIcon /> },
-];
 
 const drawerWidth = 256;
 
@@ -77,6 +71,13 @@ const useStyles = makeStyles(
         height: 44,
         [breakpoints.up('sm')]: {
           height: 50,
+        },
+      },
+      logoPms: {
+        height: 30,
+        marginLeft: spacing(1),
+        [breakpoints.up('sm')]: {
+          height: 33,
         },
       },
       grow: {
@@ -130,8 +131,53 @@ const useStyles = makeStyles(
     }),
 );
 
+interface DrawerItems {
+  id: number;
+  title: string;
+  subtitles: string[];
+  icon: ReactElement<SvgIconProps>;
+}
+
+interface ItemOpens {
+  [key: number]: boolean;
+}
+
+const drawerItems: DrawerItems[] = [
+  {
+    id: 1,
+    title: 'Declarações',
+    subtitles: ['Declaração de Bens', 'Parceiro Econômico'],
+    icon: <AccountBalance />,
+  },
+  {
+    id: 2,
+    title: 'Avaliações',
+    subtitles: ['Avaliação Periódica'],
+    icon: <BarChart />,
+  },
+  {
+    id: 3,
+    title: 'Recadastramento',
+    subtitles: [],
+    icon: <HowToReg />,
+  },
+  {
+    id: 4,
+    title: 'Formulários',
+    subtitles: ['Falta Lei'],
+    icon: <ListAlt />,
+  },
+  {
+    id: 5,
+    title: 'Links',
+    subtitles: [],
+    icon: <LinkIcon />,
+  },
+];
+
 const AppShell: React.FC = ({ children }) => {
-  const [open, setOpen] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [itemOpen, setItemOpen] = useState<ItemOpens>({});
 
   const classes = useStyles();
   const theme = useTheme();
@@ -139,11 +185,23 @@ const AppShell: React.FC = ({ children }) => {
   const { user } = useAuth();
 
   const handleDrawerOpen = useCallback(() => {
-    setOpen(true);
+    setDrawerOpen(true);
   }, []);
 
   const handleDrawerClose = useCallback(() => {
-    setOpen(false);
+    Object.keys(itemOpen).forEach((key) => {
+      setItemOpen((state) => ({ ...state, [key]: false }));
+    });
+    setDrawerOpen(false);
+  }, [itemOpen]);
+
+  const handleItemOpen = useCallback((item) => {
+    const { id, subtitles } = item;
+
+    if (subtitles.length) {
+      setDrawerOpen(true);
+      setItemOpen((state) => ({ ...state, [id]: !state[id] }));
+    }
   }, []);
 
   if (user) {
@@ -152,17 +210,17 @@ const AppShell: React.FC = ({ children }) => {
         <AppBar
           position="fixed"
           className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
+            [classes.appBarShift]: drawerOpen,
           })}
         >
           <Toolbar>
             <IconButton
               color="inherit"
-              aria-label="open drawer"
+              aria-label="abre menu lateral"
               onClick={handleDrawerOpen}
               edge="start"
               className={clsx(classes.menuButton, {
-                [classes.hide]: open,
+                [classes.hide]: drawerOpen,
               })}
             >
               <MenuIcon />
@@ -179,13 +237,13 @@ const AppShell: React.FC = ({ children }) => {
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerOpen]: drawerOpen,
+            [classes.drawerClose]: !drawerOpen,
           })}
           classes={{
             paper: clsx({
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
+              [classes.drawerOpen]: drawerOpen,
+              [classes.drawerClose]: !drawerOpen,
             }),
           }}
         >
@@ -193,7 +251,7 @@ const AppShell: React.FC = ({ children }) => {
             <img
               src={logoPms}
               alt="Logo Prefeitura de Santos"
-              style={{ marginLeft: theme.spacing(1) }}
+              className={classes.logoPms}
             />
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === 'rtl' ? (
@@ -205,24 +263,29 @@ const AppShell: React.FC = ({ children }) => {
           </div>
           <Divider />
           <List>
-            {routes.map((item) => (
-              <ListItem button key={item.title}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItem>
+            {drawerItems.map((item: DrawerItems) => (
+              <div key={item.id}>
+                <ListItem button onClick={() => handleItemOpen(item)}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                  {!!item.subtitles.length &&
+                    (itemOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
+                </ListItem>
+                {!!item.subtitles.length && (
+                  <Collapse in={itemOpen[item.id]} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {item.subtitles.map((subtitle) => (
+                        <ListItem button key={subtitle}>
+                          <ListItemText inset primary={subtitle} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
+              </div>
             ))}
           </List>
           <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} id="back-to-top-anchor" />
