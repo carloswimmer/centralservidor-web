@@ -18,6 +18,7 @@ import {
   IconButton,
   Collapse,
   SvgIconProps,
+  useMediaQuery,
 } from '@material-ui/core';
 import {
   Menu as MenuIcon,
@@ -181,8 +182,13 @@ const AppShell: React.FC = ({ children }) => {
 
   const classes = useStyles();
   const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   // eslint-disable-next-line
   const { user } = useAuth();
+
+  useEffect(() => {
+    setDrawerOpen(matches);
+  }, [matches]);
 
   const handleDrawerOpen = useCallback(() => {
     setDrawerOpen(true);

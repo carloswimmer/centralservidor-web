@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Grid, Box } from '@material-ui/core';
+import { Typography, Grid, Box, Hidden } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Copyright } from '@material-ui/icons';
 
@@ -10,7 +10,7 @@ import signInBackground from '../../assets/people-working.jpg';
 
 import SignInForm from './SingInForm';
 
-const useStyles = makeStyles(({ palette }: Theme) => ({
+const useStyles = makeStyles(({ palette, breakpoints }: Theme) => ({
   root: {
     backgroundColor:
       palette.type === 'light' ? palette.primary.light : undefined,
@@ -19,15 +19,26 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
 
   contentClass: {
     height: '100vh',
-    maxWidth: 600,
+    width: '100vw',
+    [breakpoints.up('md')]: {
+      width: '50%',
+      maxWidth: 600,
+      minWidth: 375,
+    },
   },
 
   header: {
     flex: 1,
-    height: 279,
+    height: 210,
     backgroundColor: palette.primary.main,
     '& img': {
-      width: 370,
+      width: 300,
+    },
+    [breakpoints.up('sm')]: {
+      height: 279,
+      '& img': {
+        width: 370,
+      },
     },
   },
 
@@ -79,6 +90,7 @@ const useStyles = makeStyles(({ palette }: Theme) => ({
   copyright: {
     display: 'flex',
     position: 'absolute',
+    maxWidth: '40%',
     bottom: 40,
     right: 64,
     opacity: 0.6,
@@ -119,17 +131,19 @@ const SignIn: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-      <Grid className={classes.backgroundClass} item />
-      <Grid className={classes.logoPms} item>
-        <img src={logoPms} alt="Logo da Prefeitura de Santos" />
-      </Grid>
-      <Grid className={classes.copyright} item>
-        <Copyright fontSize="small" />
-        <Typography variant="caption" align="right">
-          &nbsp;Composição sobre fotos de Kelly Sikkema, Austin Distel e Glenn
-          Carstens-Peters
-        </Typography>
-      </Grid>
+      <Hidden smDown>
+        <Grid className={classes.backgroundClass} item />
+        <Grid className={classes.logoPms} item>
+          <img src={logoPms} alt="Logo da Prefeitura de Santos" />
+        </Grid>
+        <Grid className={classes.copyright} item>
+          <Copyright fontSize="small" />
+          <Typography variant="caption" align="right">
+            &nbsp;Composição sobre fotos de Kelly Sikkema, Austin Distel e Glenn
+            Carstens-Peters
+          </Typography>
+        </Grid>
+      </Hidden>
     </Grid>
   );
 };
