@@ -130,6 +130,7 @@ const SignInForm: React.FC = () => {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
+                    data-testid="password-visibility"
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"

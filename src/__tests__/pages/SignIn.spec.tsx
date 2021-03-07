@@ -1,5 +1,11 @@
 import React from 'react';
-import { fireEvent, render, act, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  act,
+  waitFor,
+  createEvent,
+} from '@testing-library/react';
 import SignIn from '../../pages/SignIn';
 
 const mockedAddToast = jest.fn();
@@ -39,5 +45,49 @@ describe('SignIn Page', () => {
         expect.objectContaining({ severity: 'success' }),
       );
     });
+  });
+
+  it('should be able to show password value', async () => {
+    const { getByLabelText, getByTestId } = render(<SignIn />);
+
+    const senhaField = getByLabelText('Senha');
+    const buttonElement = getByTestId('password-visibility');
+
+    fireEvent.change(senhaField, { target: { value: 'minhasenha' } });
+    act(() => {
+      fireEvent.click(buttonElement);
+    });
+
+    await waitFor(() => {
+      expect(senhaField).toHaveProperty('type', 'text');
+    });
+  });
+
+  it('should be able to hide password value', async () => {
+    const { getByLabelText, getByTestId } = render(<SignIn />);
+
+    const senhaField = getByLabelText('Senha');
+    const buttonElement = getByTestId('password-visibility');
+
+    fireEvent.change(senhaField, { target: { value: 'minhasenha' } });
+    act(() => {
+      fireEvent.click(buttonElement);
+      fireEvent.click(buttonElement);
+    });
+
+    await waitFor(() => {
+      expect(senhaField).toHaveProperty('type', 'password');
+    });
+  });
+
+  it('should be able to not refresh the form', () => {
+    const { getByTestId } = render(<SignIn />);
+
+    const buttonElement = getByTestId('password-visibility');
+    const mouseDownEvent = createEvent.mouseDown(buttonElement);
+
+    fireEvent(buttonElement, mouseDownEvent);
+
+    expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 });
