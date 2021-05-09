@@ -17,6 +17,7 @@ import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 import handleFieldProps from '../../components/controls/utils/handleFieldProps';
 import { Input, Button } from '../../components/controls';
+import getErrorMessage from '../../components/controls/utils/getErrorMessage';
 
 const useStyles = makeStyles(({ zIndex }: Theme) => ({
   root: {
@@ -94,7 +95,8 @@ const SignInForm: React.FC = () => {
           severity: 'success',
         });
       } catch (err) {
-        addToast({ text: err.response.data.message });
+        const message = getErrorMessage(err);
+        addToast({ text: message });
         actions.setSubmitting(false);
       }
     },
